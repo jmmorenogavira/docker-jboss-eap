@@ -1,0 +1,19 @@
+#!/bin/bash
+
+PROFILE="$1"
+
+JAVA_OPTS_EXTRA=${JAVA_OPTS_EXTRA:-"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8787 -Dcom.sun.management.jmxremote.port=6060"}
+JAVA_OPTS_MEM=${JAVA_OPTS_MEM:-"-Xms1024m -Xmx2048m -XX:MaxPermSize=256m"}
+JAVA_OPTS_BIND_ADD=${JAVA_OPTS_BIND_ADD:-"0.0.0.0"}
+
+exec java \
+    -Dprogram.name=run.sh -server ${JAVA_OPTS_MEM} "${JAVA_OPTS_EXTRA}" \
+    -Dorg.jboss.resolver.warning=true \
+    -Dsun.rmi.dgc.client.gcInterval=3600000 \
+    -Dsun.rmi.dgc.server.gcInterval=3600000 \
+    -Dsun.lang.ClassLoader.allowArraySyntax=true \
+    -Djava.net.preferIPv4Stack=true \
+    -Djava.endorsed.dirs="${JBOSS_EAP_HOME}/jboss-as/lib/endorsed" \
+    -classpath "${JBOSS_EAP_HOME}/jboss-as/bin/run.jar" org.jboss.Main -b ${JAVA_OPTS_BIND_ADD} -c "$PROFILE" ${JAVA_OPTS_PORTS} $@
+
+

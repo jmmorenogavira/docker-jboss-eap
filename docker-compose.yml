@@ -1,0 +1,32 @@
+# My docker-compose.yml file
+
+# JBoss EAP 5.2
+jbosseap:
+  image: jboss-eap
+  container_name: jboss-eap-myconf
+  #network_mode: default
+  command: jboss-eap myconf
+  extra_hosts:
+  - my_database:192.168.0.4
+  #hostname: mypersodomain.com
+  #volumes:
+  #- 
+  environment:
+  - JAVA_OPTS_MEM=-Xms1024m -Xmx2048m -XX:MaxPermSize=256m
+  - JAVA_OPTS_EXTRA=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8787 -Dfile.encoding=UTF-8
+  - JAVA_OPTS_BIND_ADD=0.0.0.0
+  #- JAVA_OPTS_PORTS=-Djboss.service.binding.set=ports-01
+  ports:
+  - 1098:1098
+  - 1099:1099
+  - 3873:3873
+  - 4446:4446
+  - 4444:4444
+  - 4445:4445
+  - 4712:4712
+  - 4713:4713
+  - 8009:8009
+  - 8080:8080
+  - 8083:8083
+  - 8787:8787
+  
